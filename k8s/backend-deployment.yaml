@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: 768286545498.dkr.ecr.us-east-1.amazonaws.com/wms/backend:1
+          image: 768286545498.dkr.ecr.us-east-1.amazonaws.com/wms/backend:2
           ports:
             - containerPort: 8081
           envFrom:
