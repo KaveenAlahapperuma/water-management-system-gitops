@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: wms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: 768286545498.dkr.ecr.us-east-1.amazonaws.com/wms/backend:1
+          ports:
+            - containerPort: 8081
+          envFrom:
+            - secretRef:
+                name: backend-env
+          env:
+            - name: BACKUP_DIRECTORY
+              value: /tmp/backups
+          volumeMounts:
+            - name: backups
+              mountPath: /tmp/backups
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              memory: 1Gi
+          readinessProbe:
+            tcpSocket:
+              port: 8081
+            initialDelaySeconds: 40
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8081
+            initialDelaySeconds: 90
+            periodSeconds: 20
+      volumes:
+        - name: backups
+          emptyDir: {}
