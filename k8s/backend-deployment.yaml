@@ -22,6 +22,8 @@ spec:
             - secretRef:
                 name: backend-env
           env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
             - name: BACKUP_DIRECTORY
               value: /tmp/backups
           volumeMounts:
